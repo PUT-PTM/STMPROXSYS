@@ -1,3 +1,4 @@
+#include "TimerOne.h"
 int dioda1 = 3;
 int dioda2 = 4;   
 int trig2 = 7;
@@ -13,6 +14,10 @@ int Distance2 = 0;
 
 void setup() 
 {
+
+  Serial.begin(9600);
+  Timer1.initialize(100000);        
+  Timer1.attachInterrupt(T1);
   pinMode(trig1, OUTPUT);
   pinMode(echo1, INPUT);
   pinMode(trig2, OUTPUT);
@@ -20,7 +25,16 @@ void setup()
   pinMode(dioda1, OUTPUT);
   pinMode(dioda2, OUTPUT);     
 }
+
  
+void T1()
+{
+  if(Distance1 < 15) digitalWrite(3, digitalRead(3) ^ 1);
+  else digitalWrite(3,LOW);
+  if(Distance2 < 15) digitalWrite(4, digitalRead(4) ^ 1);
+  else digitalWrite(4,LOW);
+}
+
 void loop() 
 {
   digitalWrite(trig1, LOW);
@@ -30,13 +44,9 @@ void loop()
   digitalWrite(trig1, LOW);
   EchoTime1 = pulseIn(echo1, HIGH);
 
-  digitalWrite(dioda1, HIGH);  
-  delay(Distance1*5);
-  digitalWrite(dioda1, LOW); 
-  delay(Distance1*5);
-  
    Distance1 = EchoTime1 / 58;
- /*
+   Serial.println(Distance1);  
+
   digitalWrite(trig2, LOW);
   delayMicroseconds(2);
   digitalWrite(trig2, HIGH);
@@ -45,15 +55,8 @@ void loop()
   EchoTime2 = pulseIn(echo2, HIGH);
 
   Distance2 = EchoTime2 / 58;
-  // Obliczamy odległość
- 
+  Serial.println(Distance2);
+
   
-  
-  
-  digitalWrite(dioda2, HIGH);  
-  delay(Distance2*2);
-  digitalWrite(dioda2, LOW); 
-  delay(Distance2*2);
-  */
   delay(50);
 }
