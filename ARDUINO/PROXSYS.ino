@@ -1,4 +1,7 @@
-#include "TimerOne.h"
+#include "TimerOne.h" // timer 
+#include <SoftwareSerial.h> // bluetooth
+
+SoftwareSerial Bluetooth(10, 11); // piny bluetooth
 int d1 = A0;
 int d2 = A1;
 int d3 = A2;
@@ -20,7 +23,13 @@ int od1 = 0;
 int od2 = 0;
 int od3 = 0;
 int od4 = 0;
+
 bool blisko = false;
+int Dane1;
+int Dane2;
+int Dane3;
+int Dane4;
+
 
 int pom = 0;
 
@@ -28,6 +37,7 @@ void setup()
 {
 
   Serial.begin(9600);
+  Bluetooth.begin(9600);
   Timer1.initialize(100000);        
   Timer1.attachInterrupt(T1);
     pinMode(d1,OUTPUT); 
@@ -78,7 +88,7 @@ void loop()
   digitalWrite(t1, LOW);
   czas1 = pulseIn(e1, HIGH);
   od1 = czas1 / 58;
-  Serial.println("Czujnik 1: ");  Serial.println(od1); 
+ // Serial.println("Czujnik 1: ");  Serial.println(od1); 
    
   //CZUJNIK 2
   digitalWrite(t2, LOW);
@@ -88,7 +98,7 @@ void loop()
   digitalWrite(t2, LOW);
   czas2 = pulseIn(e2, HIGH);
   od2 = czas2 / 58;
-  Serial.println("Czujnik 2: "); Serial.println(od2);
+//  Serial.println("Czujnik 2: "); Serial.println(od2);
 
   //CZUJNIK 3
   digitalWrite(t3, LOW);
@@ -98,7 +108,7 @@ void loop()
   digitalWrite(t3, LOW);
   czas3 = pulseIn(e3, HIGH);
   od3 = czas3  / 58;
-  Serial.println("Czujnik 3: "); Serial.println(od3);
+ // Serial.println("Czujnik 3: "); Serial.println(od3);
 
   // CZUJNIK 4
   digitalWrite(t4, LOW);
@@ -108,7 +118,20 @@ void loop()
   digitalWrite(t4, LOW);
   czas4 = pulseIn(e4, HIGH);
   od4 = czas4  / 58;
-  Serial.println("Czujnik 4: "); Serial.println(od4);
-  
+  //Serial.println("Czujnik 4: "); Serial.println(od4);
+
+  //WYSLANIE DANYCH Z CZUJNIKOW 
+
+  Dane1 = 1000 + od1;
+  Dane2 = 2000 + od2;
+  Dane3 = 3000 + od3;
+  Dane4 = 4000 + od4;
+  Bluetooth.println(Dane1);
+  delay(50);
+  Bluetooth.println(Dane2);
+  delay(50);
+  Bluetooth.println(Dane3);
+  delay(50);
+  Bluetooth.println(Dane4);
   delay(50);
 }
