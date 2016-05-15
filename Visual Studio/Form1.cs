@@ -22,6 +22,7 @@ namespace WindowsFormsApplication2
         int[,] mapa = new int[100, 10];
 
         string line;
+        int licznik; //licznik wykonanych pomiarow - uzywane w pliku txt
 
         public Form1()
         {
@@ -35,6 +36,7 @@ namespace WindowsFormsApplication2
             y = 0;
             X = x * 2;
             Y = 200 - (y * 20);
+            licznik = 1;
 
             for (int i = 0; i < 100; i++)
             {
@@ -57,7 +59,6 @@ namespace WindowsFormsApplication2
 
             serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(DataReceived);
 
-
             podglad();
             text_X_value.Text += String.Format("{0,5} ", Convert.ToString(X));
             text_Y_value.Text += String.Format("{0,5} ", Convert.ToString(Y));
@@ -67,7 +68,7 @@ namespace WindowsFormsApplication2
         /*ustawianie wartosci 1 lub 0 dla wykrycia obiektu lub tez nie*/
         private void map()
         {
-            if (wartosc < Y + 1)
+            if (wartosc < Y + 10)
             {
                 mapa[x,y] = 1;
             }
@@ -181,6 +182,12 @@ namespace WindowsFormsApplication2
         /*obsluga zapisu pomiarow do pliku*/
         private void button_SAVE_Click(object sender, EventArgs e)
         {
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(@"C:\Users\Adam\Desktop\PTM.txt", true))
+            {
+                file.WriteLine("Numer pomiaru: "+licznik);
+            }
+
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 100; j++)
@@ -198,6 +205,13 @@ namespace WindowsFormsApplication2
                 {
                     file.WriteLine("");
                 }
+            }
+
+            licznik++;
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(@"C:\Users\Adam\Desktop\PTM.txt", true))
+            {
+                file.WriteLine(""+"");
             }
         }
     }
