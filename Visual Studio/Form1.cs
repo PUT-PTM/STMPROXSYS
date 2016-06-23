@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -21,49 +22,77 @@ namespace WindowsFormsApplication2
 
         int[,] mapa = new int[100, 10];
 
+        string port;
+        string path;
         string line;
+        string dane;
         int licznik; //licznik wykonanych pomiarow - uzywane w pliku txt
 
         public Form1()
         {
+
             InitializeComponent();
-            serialPort1.PortName = "COM17";
-            serialPort1.BaudRate = 9600;
-            /*serialPort1.Parity = Parity.None;
-            serialPort1.StopBits = StopBits.One;
-            serialPort1.DataBits = 8;*/
             x = 0;
             y = 0;
             X = x * 2;
             Y = 200 - (y * 20);
             licznik = 1;
-
-            for (int i = 0; i < 100; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    mapa[i, j] = 0;
-                }
-            }
-
-            try
-            {
-                if(!serialPort1.IsOpen)
-                {
-                    serialPort1.Open();
-                }
-            }catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(DataReceived);
-
-            podglad();
-            text_X_value.Text += String.Format("{0,5} ", Convert.ToString(X));
-            text_Y_value.Text += String.Format("{0,5} ", Convert.ToString(Y));
+            dane = null;
         }
 
+        private void button_START_Click(object sender, EventArgs e)
+        {
+            start();
+        }
+
+        private void start()
+        {
+            port = textBox_port.Text;
+
+            if (port == "COMx")
+            {
+                MessageBox.Show("Wrong COMx value");
+            }
+            else
+            {
+                button_START.Visible = false;
+                button_SAVE.Visible = true;
+                buttonON.Visible = true;
+                button_W.Visible = true;
+                button_A.Visible = true;
+                button_S.Visible = true;
+                button_D.Visible = true;
+
+                serialPort1.PortName = port;
+                serialPort1.BaudRate = 9600;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        mapa[i, j] = 0;
+                    }
+                }
+
+                try
+                {
+                    if (!serialPort1.IsOpen)
+                    {
+                        serialPort1.Open();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(DataReceived);
+
+                podglad();
+                text_X_value.Text += String.Format("{0,5} ", Convert.ToString(X));
+                text_Y_value.Text += String.Format("{0,5} ", Convert.ToString(Y));
+            }
+        }
 
         /*ustawianie wartosci 1 lub 0 dla wykrycia obiektu lub tez nie*/
         private void map()
@@ -76,6 +105,7 @@ namespace WindowsFormsApplication2
             {
                 mapa[x,y] = 0;
             }
+            
             text_map.ResetText();
             podglad();
         }
@@ -84,15 +114,6 @@ namespace WindowsFormsApplication2
         /*podglad stanu mapy-tablicy*/
         private void podglad()
         {
-           /* for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 100; j++)
-                {
-                    Console.Write(mapa[j,i]+" ");
-                }
-                Console.Write("\n");
-            }*/
-
             for (int i=0; i<10; i++)
             {
                 for(int j=0; j<100; j++)
@@ -108,14 +129,16 @@ namespace WindowsFormsApplication2
         /*odbieranie danych przez bluetooth*/
         private void DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
+
            try
             {
                 SerialPort spl = (SerialPort)sender;
 
-                string dane = spl.ReadLine();
+                dane = spl.ReadLine();
                 wartosc = Convert.ToInt32(dane);
-                Console.Write("wartosc: " + wartosc + "\n");
+                Console.WriteLine("dane: " + dane);
+                Console.WriteLine("wartosc: " + wartosc);
             }
             catch(Exception ex)
             {
@@ -167,6 +190,7 @@ namespace WindowsFormsApplication2
             text_X_value.Text = String.Format("{0,5} ", Convert.ToString(X));
         }
 
+
         private void button_D_Click(object sender, EventArgs e)
         {
             if (x < 99)
@@ -182,36 +206,61 @@ namespace WindowsFormsApplication2
         /*obsluga zapisu pomiarow do pliku*/
         private void button_SAVE_Click(object sender, EventArgs e)
         {
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(@"C:\Users\Adam\Desktop\PTM.txt", true))
+            path = textBox_path.Text;
+            FileInfo file1 = new FileInfo(path);
+            try
             {
-                file.WriteLine("Numer pomiaru: "+licznik);
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 100; j++)
+                using (StreamWriter file =
+                new StreamWriter(@path, true))
                 {
-                    line = Convert.ToString(mapa[j,i]);
-                    using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(@"C:\Users\Adam\Desktop\PTM.txt", true))
+                    file.WriteLine("Numer pomiaru: " + licznik);
+                }
+
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 100; j++)
                     {
-                        file.Write(line);
+                        line = Convert.ToString(mapa[j, i]);
+                        using (StreamWriter file =
+                        new StreamWriter(@path, true))
+                        {
+                            file.Write(line);
+                        }
+                    }
+
+                    using (StreamWriter file =
+                    new StreamWriter(@path, true))
+                    {
+                        file.WriteLine("");
                     }
                 }
 
-                using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"C:\Users\Adam\Desktop\PTM.txt", true))
+                licznik++;
+                using (StreamWriter file =
+                new StreamWriter(@path, true))
                 {
-                    file.WriteLine("");
+                    file.WriteLine("" + "");
                 }
             }
-
-            licznik++;
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(@"C:\Users\Adam\Desktop\PTM.txt", true))
+            catch(UnauthorizedAccessException)
             {
-                file.WriteLine(""+"");
+                MessageBox.Show("Wrong path");
+            }
+            catch (ArgumentNullException)
+            {
+                MessageBox.Show("Wrong path");
+            }
+            catch (NotSupportedException)
+            {
+                MessageBox.Show("Wrong path");
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Wrong path");
+            }
+            catch (PathTooLongException)
+            {
+                MessageBox.Show("Wrong path");
             }
         }
     }
