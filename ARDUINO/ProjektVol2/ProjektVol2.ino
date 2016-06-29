@@ -1,4 +1,3 @@
-#include "TimerOne.h" // timer 
 #include <SoftwareSerial.h> // bluetooth
 
 SoftwareSerial Bluetooth(8, 9); // piny bt
@@ -13,20 +12,12 @@ int pom = 0;
 void setup() {
   Serial.begin(9600);
   Bluetooth.begin(9600);
-  //Timer1.initialize(100000);        
-  //Timer1.attachInterrupt(T1);
   pinMode(d,OUTPUT);
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
   
 }
 
-/*void T1()
-{
-  pom = pom ^ 1;
-  if(pom == 1) digitalWrite(d,digitalRead(d)^1);
-}
-*/
 
 void loop() {
   digitalWrite(trig, LOW);
