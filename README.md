@@ -8,6 +8,7 @@ It is a simple project which main task is to mesure range of sensor with our pro
 
 The idea is based on create scale 2x2m (with graduation 2cm horizontally and 20cm vertical), which response with picture rendered by the program. Conducting measurements of sensor's range is presented in following steps:
 1. Preparation of the scale.
+
 2. Connection sensor with computer via bluetooth and declare in program value of Serial Port.
 3. Set sensor in the middle of the outer edge of scale - on the middle of side with 2cm graduation.
 4. Use box 10x10cm.
