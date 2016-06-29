@@ -7,8 +7,8 @@ It is a simple project which main task is to mesure range of sensor with our pro
 
 
 The idea is based on create scale 2x2m (with graduation 2cm horizontally and 20cm vertical), which response with picture rendered by the program. Conducting measurements of sensor's range is presented in following steps:
-1. Preparation of the scale.
 
+1. Preparation of the scale.
 2. Connection sensor with computer via bluetooth and declare in program value of Serial Port.
 3. Set sensor in the middle of the outer edge of scale - on the middle of side with 2cm graduation.
 4. Use box 10x10cm.
@@ -20,6 +20,7 @@ There is also an option to save generated map of the range into txt file (it is 
 
 
 Pomysł opiera się na stworzeniu skali 2x2m (z podziałką 2cm w poziomie i 20cm w pionie), odpowiadającej obrazowi renderowanemu przez program. Prowadzenie pomiarów zasięgu czujnika przedstawia się następująco:
+
 1. Przygotowaniu odpowiedniej skali
 2. Podłączeniu czujnika za pomocą bluetooth do komputera i podaniu w programie odpowiedniej wartości portu COM.
 3. Ustawienie czujnika na środku zewnętrznej krawędzi skali, tzn. na środku boku zawierającego podziałkę 2cm).
