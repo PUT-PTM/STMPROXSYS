@@ -3,7 +3,7 @@
 PROXSYS - PROXIMITY SYSTEM
 
 It is a simple project which main task is to mesure range of sensor with our program and customized scale.
-
+Just only by changing few lines in Arduino file, you can test others sensors. (It may require to change scale both in program and on the spot measurements)
 
 
 The idea is based on create scale 2x2m (with graduation 2cm horizontally and 20cm vertical), which response with picture rendered by the program. Conducting measurements of sensor's range is presented in following steps:
@@ -18,6 +18,10 @@ The idea is based on create scale 2x2m (with graduation 2cm horizontally and 20c
 There is also an option to save generated map of the range into txt file (it is required to specify the path of the file).
 
 
+PROXSYS - PROXIMITY SYSTEM
+
+Prosty projekt, którego zadaniem jest zbadanie kształtu i zasięgu widocznosci czujnika za pomocą dedykowanego programu i skali.
+Poprzez zmiane tylko paru linii w kodzie Arduino, jest możliwym by przetestować inne czujniki. (Może się to wiązać z koniecznością zmiany skali zarówno w programie jak i na miejscu pomiarów)
 
 Pomysł opiera się na stworzeniu skali 2x2m (z podziałką 2cm w poziomie i 20cm w pionie), odpowiadającej obrazowi renderowanemu przez program. Prowadzenie pomiarów zasięgu czujnika przedstawia się następująco:
 
